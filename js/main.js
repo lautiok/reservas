@@ -1,3 +1,15 @@
+const populateServicesSelect = () => {
+    const selectElement = document.getElementById('service');
+    services.forEach((service) => {
+        const optionElement = document.createElement('option');
+        optionElement.value = service.value;
+        optionElement.textContent = service.name;
+        selectElement.appendChild(optionElement);
+    });
+};
+
+populateServicesSelect();
+
 const getFormData = () => {
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
@@ -16,11 +28,19 @@ const saveReservation = () => {
     });
 
     if (isDuplicateReservation) {
-        displayStatusMessage('Ya existe una reserva para esa fecha y hora.', 'error');
+        Swal.fire({
+            title: 'Ya existe una reserva para esa fecha y hora',
+            icon: 'error',
+            confirmButtonColor: '#ff8f9a'
+        });
     } else {
         reservations.push(reservationData);
         localStorage.setItem('reservations', JSON.stringify(reservations));
-        displayStatusMessage('Reserva realizada exitosamente', 'success');
+        Swal.fire({
+            title: 'Reserva realizada exitosamente',
+            icon: 'success',
+            confirmButtonColor: '#ff7987'
+        });
         displayReservations();
     }
 };
@@ -43,7 +63,7 @@ const displayReservations = () => {
             listItem.innerHTML = `
                 <span>Nombre: ${reservation.name}</span>
                 <span>Fecha: ${reservation.date}</span>
-                <button onclick="cancelReservation(${index})" ${reservation.canceled ? 'disabled' : ''}>${reservation.canceled ? 'Cancelado' : 'Cancelar'}</button>
+                <button class="button" onclick="cancelReservation(${index})" ${reservation.canceled ? 'disabled' : ''}>${reservation.canceled ? 'Cancelado' : 'Cancelar'}</button>
             `;
             if (reservation.canceled) {
                 listItem.classList.add('canceled');
@@ -55,9 +75,43 @@ const displayReservations = () => {
 
 const cancelReservation = (index) => {
     const reservations = getReservations();
-    reservations.splice(index, 1);
-    localStorage.setItem('reservations', JSON.stringify(reservations));
-    displayReservations();
+    const reservationToCancel = reservations[index];
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: '¿Desea eliminar su reserva?',
+        text: `Usted va a cancelar su reserva para el dia: ${reservationToCancel.date}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Cancelar reserva!',
+        cancelButtonText: 'volver',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            reservations.splice(index, 1);
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            displayReservations();
+
+            swalWithBootstrapButtons.fire(
+                'Reserva cancelada!',
+                'Usted a eliminado su reserva',
+                'success',
+            );
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'Usted a cancelado su cancelación  :)',
+                'error'
+            );
+        }
+    });
 };
 
 const displayStatusMessage = (message, type) => {
@@ -69,6 +123,7 @@ const displayStatusMessage = (message, type) => {
 document.getElementById('reservationForm').addEventListener('submit', (event) => {
     event.preventDefault();
     saveReservation();
+    event.target.reset();
 });
 
 displayReservations();

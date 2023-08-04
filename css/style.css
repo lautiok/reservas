@@ -45,7 +45,7 @@ select {
     font-size: 14px;
 }
 
-button {
+ .button {
     background-color: #ff7987;
     color: #fff;
     border: none;
@@ -57,7 +57,7 @@ button {
     width: 100%;
 }
 
-button:hover {
+ .button:hover {
     background-color: #ff8f9a;
 }
 #reservationsList {
@@ -100,4 +100,20 @@ button:hover {
     padding: 5px 10px;
     cursor: pointer;
     font-size: 14px;
+}
+.btn{
+    padding: 1rem;
+    margin-left: 1rem;
+}
+.btn-success {
+    background-color: #ff0000;
+    color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+}
+.btn-danger{
+    background-color: #23af00;
+    color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
 }

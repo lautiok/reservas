@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
     <title>Sistema de Reserva</title>
 </head>
 
@@ -26,15 +27,9 @@
         <label for="service">Servicio:</label>
         <select id="service" required>
             <option value="" disabled selected>Selecciona un servicio</option>
-            <option value="Esculpidas en Acrílico">Esculpidas en Acrílico</option>
-            <option value="Kapping en Acrílico">Kapping en Acrílico</option>
-            <option value="Esculpidas Cover">Esculpidas Cover</option>
-            <option value="Esculpidas Nails Art">Esculpidas Nails Art</option>
-            <option value="Esmaltado Semi Permanente">Esmaltado Semi Permanente</option>
-            <option value="Esculpida Full Acrílico">Esculpida Full Acrílico</option>
         </select><br>
 
-        <button type="submit">Reservar</button>
+        <button class="button" type="submit">Reservar</button>
     </form>
 
     <div data-aos="fade-up" id="statusMessage"></div>
@@ -42,8 +37,10 @@
         <h3>Mis Reservas:</h3>
         <ul id="reservations"></ul>
     </div>
+    <script src="./js/services.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.all.min.js"></script>
 
-    <script src="./main.js"></script>
 </body>
 
 </html>
