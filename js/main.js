@@ -1,11 +1,23 @@
-const populateServicesSelect = () => {
+const populateServicesSelect = async () => {
     const selectElement = document.getElementById('service');
-    services.forEach((service) => {
-        const optionElement = document.createElement('option');
-        optionElement.value = service.value;
-        optionElement.textContent = service.name;
-        selectElement.appendChild(optionElement);
-    });
+    try {
+        const response = await fetch('./json/service.json'); 
+        const services = await response.json();
+        
+        services.forEach((service) => {
+            const optionElement = document.createElement('option');
+            optionElement.value = service.value;
+            optionElement.textContent = service.name;
+            selectElement.appendChild(optionElement);
+        });
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error 404',
+            text: 'Error al cargar los servicios',
+            footer: '<a href="https://support.google.com/webmasters/answer/2445990?hl=es">¿Por qué tengo este problema?</a>'
+          })
+    }
 };
 
 populateServicesSelect();
